@@ -1,71 +1,354 @@
 @use "./variables.scss" as *;
 
-// ─── Hero banner on index page only ────────────────────────────────────────
-.page[data-slug="index"] {
-  #quartz-body .center > article {
-    > h1:first-child {
-      font-size: 2.8rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      background: linear-gradient(135deg, var(--secondary) 0%, var(--tertiary) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 0.25rem;
-    }
+// ─────────────────────────────────────────────────────────────────────────────
+// FONTS
+// ─────────────────────────────────────────────────────────────────────────────
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
-    > p:first-of-type {
-      font-size: 1.15rem;
-      color: var(--gray);
-      max-width: 600px;
-      line-height: 1.6;
+// ─────────────────────────────────────────────────────────────────────────────
+// GLOBAL SURFACE & SPACING
+// ─────────────────────────────────────────────────────────────────────────────
+body {
+  font-size: 15.5px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+
+// Subtle grid texture on the page background (dark mode only)
+@media (prefers-color-scheme: dark) {
+  body {
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// HEADER / NAV STRIP
+// ─────────────────────────────────────────────────────────────────────────────
+#quartz-body header {
+  border-bottom: 1px solid var(--lightgray);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: color-mix(in srgb, var(--light) 85%, transparent);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// HERO — index page only
+// ─────────────────────────────────────────────────────────────────────────────
+.page[data-slug="index"] #quartz-body .center > article {
+
+  // Gradient hero title
+  > h1:first-child {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--tertiary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0;
+    border-bottom: none !important;
+  }
+
+  // Subtitle paragraph
+  > p:first-of-type {
+    font-size: 1.1rem;
+    color: var(--gray);
+    max-width: 560px;
+    line-height: 1.65;
+    margin-top: 0;
+  }
+
+  // Horizontal rule becomes a thin accent line
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, var(--secondary), transparent);
+    margin: 2rem 0;
+    opacity: 0.4;
+  }
+
+  // Section heading on index
+  h2 {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray);
+    border-bottom: none !important;
+    margin-bottom: 0.5rem;
+  }
+
+  // Note links on index look like cards
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    li {
+      margin: 0;
+
+      a {
+        display: block;
+        padding: 0.5rem 0.75rem;
+        border-radius: 6px;
+        border: 1px solid transparent;
+        text-decoration: none;
+        font-weight: 500;
+        transition: background 0.15s, border-color 0.15s;
+        color: var(--secondary);
+
+        &:hover {
+          background: color-mix(in srgb, var(--secondary) 8%, transparent);
+          border-color: color-mix(in srgb, var(--secondary) 20%, transparent);
+          text-decoration: none;
+        }
+      }
     }
   }
 }
 
-// ─── Hide footer links (keep minimal) ──────────────────────────────────────
-footer ul {
-  display: none;
-}
-
-footer p {
-  font-size: 0.75rem;
-  color: var(--gray);
-  opacity: 0.5;
-}
-
-// ─── Nicer article typography ───────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// ARTICLE TYPOGRAPHY
+// ─────────────────────────────────────────────────────────────────────────────
 article {
-  h1, h2, h3 {
-    letter-spacing: -0.02em;
+  h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
   }
 
   h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
     border-bottom: 1px solid var(--lightgray);
-    padding-bottom: 0.3rem;
+    padding-bottom: 0.35rem;
+    margin-top: 2.5rem;
   }
 
-  // Subtle link underline
+  h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--secondary);
+  }
+
+  // Paragraph spacing
+  p { margin: 0.85rem 0; }
+
+  // Links
   a {
+    text-decoration-line: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 3px;
+    text-decoration-color: color-mix(in srgb, var(--secondary) 40%, transparent);
+    transition: text-decoration-color 0.15s;
+
+    &:hover {
+      text-decoration-color: var(--secondary);
+    }
   }
 }
 
-// ─── Code blocks ────────────────────────────────────────────────────────────
-pre {
-  border-radius: 8px;
-  border: 1px solid var(--lightgray);
+// ─────────────────────────────────────────────────────────────────────────────
+// CODE
+// ─────────────────────────────────────────────────────────────────────────────
+code {
+  font-size: 0.875em;
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--secondary) 8%, var(--lightgray));
+  font-family: var(--codeFont);
 }
 
-// ─── Callout polish ─────────────────────────────────────────────────────────
+pre {
+  border-radius: 10px;
+  border: 1px solid var(--lightgray);
+  padding: 1.1rem 1.25rem;
+  overflow-x: auto;
+  position: relative;
+
+  code {
+    background: none;
+    padding: 0;
+    font-size: 0.85rem;
+    line-height: 1.65;
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CALLOUTS
+// ─────────────────────────────────────────────────────────────────────────────
 .callout {
   border-radius: 8px;
   border-left-width: 3px;
+  padding: 0.85rem 1rem;
+
+  .callout-title {
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.01em;
+  }
+
+  .callout-content {
+    font-size: 0.95rem;
+    p:last-child { margin-bottom: 0; }
+  }
 }
 
-// ─── Graph view ─────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// TABLES
+// ─────────────────────────────────────────────────────────────────────────────
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.9rem;
+  margin: 1.25rem 0;
+
+  th {
+    background: color-mix(in srgb, var(--secondary) 10%, var(--lightgray));
+    font-weight: 600;
+    text-align: left;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  td {
+    padding: 0.55rem 0.85rem;
+    border-bottom: 1px solid var(--lightgray);
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  tr:hover td {
+    background: color-mix(in srgb, var(--secondary) 4%, transparent);
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SIDEBAR PANELS
+// ─────────────────────────────────────────────────────────────────────────────
+#quartz-body .sidebar {
+  .sidebar-inner {
+    padding-top: 1.5rem;
+  }
+}
+
+// Explorer title
+.explorer > .explorer-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+
+// Graph container
 #graph-container {
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
+  border: 1px solid var(--lightgray);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SEARCH
+// ─────────────────────────────────────────────────────────────────────────────
+#search-bar {
+  border-radius: 8px;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  transition: border-color 0.15s, box-shadow 0.15s;
+
+  &:focus-within {
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--secondary) 15%, transparent);
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// BLOCKQUOTES
+// ─────────────────────────────────────────────────────────────────────────────
+blockquote {
+  border-left: 3px solid var(--tertiary);
+  padding: 0.1rem 1rem;
+  margin: 1rem 0;
+  color: var(--gray);
+  font-style: italic;
+  background: color-mix(in srgb, var(--tertiary) 5%, transparent);
+  border-radius: 0 6px 6px 0;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MERMAID DIAGRAMS
+// ─────────────────────────────────────────────────────────────────────────────
+.mermaid {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
+
+  svg {
+    border-radius: 8px;
+    max-width: 100%;
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FOOTER — hide completely
+// ─────────────────────────────────────────────────────────────────────────────
+footer {
+  display: none !important;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SCROLLBAR (webkit)
+// ─────────────────────────────────────────────────────────────────────────────
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--lightgray);
+  border-radius: 3px;
+  &:hover { background: var(--gray); }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// POPOVER CARDS
+// ─────────────────────────────────────────────────────────────────────────────
+.popover {
+  border-radius: 10px;
+  border: 1px solid var(--lightgray);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  overflow: hidden;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// TAG CHIPS
+// ─────────────────────────────────────────────────────────────────────────────
+a.tag-link {
+  display: inline-block;
+  padding: 0.15em 0.6em;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: color-mix(in srgb, var(--secondary) 12%, var(--lightgray));
+  color: var(--secondary);
+  text-decoration: none;
+  border: 1px solid color-mix(in srgb, var(--secondary) 20%, transparent);
+  transition: background 0.15s;
+
+  &:hover {
+    background: color-mix(in srgb, var(--secondary) 20%, var(--lightgray));
+    text-decoration: none;
+  }
 }
