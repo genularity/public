@@ -12,7 +12,7 @@ SYNCED=0
 SKIPPED=0
 
 while IFS= read -r -d '' file; do
-  if head -20 "$file" | grep -qE "^publish:\s*true"; then
+  if head -50 "$file" | grep -qE "^publish:\s*true"; then
     rel="${file#$VAULT/}"
     dest="$CONTENT/$rel"
     mkdir -p "$(dirname "$dest")"
