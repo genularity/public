@@ -312,6 +312,21 @@ footer {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// READING PROGRESS BAR
+// ─────────────────────────────────────────────────────────────────────────────
+#reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(90deg, #7aa2f7, #bb9af7, #ff9e64);
+  z-index: 9999;
+  transition: width 0.1s linear;
+  border-radius: 0 2px 2px 0;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // SCROLLBAR (webkit)
 // ─────────────────────────────────────────────────────────────────────────────
 ::-webkit-scrollbar { width: 6px; height: 6px; }
