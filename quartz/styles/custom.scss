@@ -9,10 +9,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-// Subtle grid texture on the page background (dark mode only)
+// Subtle grid texture on the page background — Tokyo Night dark mode
+[saved-theme="dark"] body,
 @media (prefers-color-scheme: dark) {
   body {
-    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0);
+    background-image: radial-gradient(circle at 1px 1px, rgba(122, 162, 247, 0.04) 1px, transparent 0);
     background-size: 24px 24px;
   }
 }
@@ -35,13 +36,13 @@ body {
 // ─────────────────────────────────────────────────────────────────────────────
 .page[data-slug="index"] #quartz-body .center > article {
 
-  // Gradient hero title
+  // Gradient hero title — Tokyo Night blue→purple
   > h1:first-child {
     font-size: clamp(2.2rem, 5vw, 3.4rem);
     font-weight: 800;
     letter-spacing: -0.04em;
     line-height: 1.1;
-    background: linear-gradient(135deg, var(--secondary) 0%, var(--tertiary) 100%);
+    background: linear-gradient(135deg, #7aa2f7 0%, #bb9af7 60%, #ff9e64 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -59,13 +60,13 @@ body {
     margin-top: 0;
   }
 
-  // Horizontal rule becomes a thin accent line
+  // Horizontal rule — Tokyo Night accent fade
   hr {
     border: none;
     height: 1px;
-    background: linear-gradient(90deg, var(--secondary), transparent);
+    background: linear-gradient(90deg, #7aa2f7, #bb9af7, transparent);
     margin: 2rem 0;
-    opacity: 0.4;
+    opacity: 0.5;
   }
 
   // Section heading on index
@@ -135,7 +136,7 @@ article {
     font-size: 1.05rem;
     font-weight: 600;
     letter-spacing: -0.01em;
-    color: var(--secondary);
+    color: var(--tertiary);  // Tokyo Night purple for h3
   }
 
   // Paragraph spacing

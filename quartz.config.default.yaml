@@ -21,25 +21,27 @@ configuration:
       code: JetBrains Mono
     colors:
       lightMode:
-        light: "#f8f8f2"
-        lightgray: "#e8e8e0"
-        gray: "#9e9e8e"
-        darkgray: "#3a3a2e"
-        dark: "#1a1a14"
-        secondary: "#6366f1"
-        tertiary: "#a78bfa"
-        highlight: rgba(99, 102, 241, 0.08)
-        textHighlight: "#fde68a99"
+        # Tokyo Night Day (light variant)
+        light: "#e1e2e7"        # background
+        lightgray: "#c4c8da"    # surface / borders
+        gray: "#848cb5"         # muted text
+        darkgray: "#3760bf"     # heading / strong text (blue)
+        dark: "#1a1b26"         # primary text
+        secondary: "#2e7de9"    # links / accents (blue)
+        tertiary: "#9854f1"     # secondary accent (purple)
+        highlight: "rgba(46, 125, 233, 0.08)"
+        textHighlight: "#8c6c3e55"
       darkMode:
-        light: "#13131a"
-        lightgray: "#1e1e2e"
-        gray: "#585878"
-        darkgray: "#cdd6f4"
-        dark: "#f5f5ff"
-        secondary: "#89b4fa"
-        tertiary: "#cba6f7"
-        highlight: rgba(137, 180, 250, 0.10)
-        textHighlight: "#f9e2af55"
+        # Tokyo Night Storm (canonical dark)
+        light: "#24283b"        # background
+        lightgray: "#292e42"    # surface / sidebars / borders
+        gray: "#565f89"         # muted / comments
+        darkgray: "#a9b1d6"     # body text
+        dark: "#c0caf5"         # headings / bright text
+        secondary: "#7aa2f7"    # links / accents (blue)
+        tertiary: "#bb9af7"     # secondary accent (purple)
+        highlight: "rgba(122, 162, 247, 0.10)"
+        textHighlight: "#e0af6855"
 plugins:
   - source: github:quartz-community/created-modified-date
     enabled: true
@@ -54,8 +56,8 @@ plugins:
     enabled: true
     options:
       theme:
-        light: github-light
-        dark: github-dark
+        light: min-light
+        dark: tokyo-night
       keepBackground: false
     order: 20
   - source: github:quartz-community/obsidian-flavored-markdown
