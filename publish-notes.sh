@@ -4,7 +4,7 @@
 #
 # Why this exists: sync-notes.sh only mirrors the vault into content/. The
 # commit and push used to be improvised by hand on every publish, including
-# re-creating a throwaway GIT_ASKPASS shim after every container restart.
+# re-creating a throwaway credential shim after every container restart.
 # That was the fragile part, so it lives here now.
 #
 # What is deliberately NOT automated:
@@ -38,9 +38,9 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-# ---- 1. credential present? ------------------------------------------------
+# ---- 1. credential present and accepted? -----------------------------------
 # Checked before doing any work, so we fail before making local changes we
-# then cannot push. Never echo the value; a length check is enough.
+# then cannot push. Never echo the value.
 if [ -z "${GITHUB_TOKEN:-}" ]; then
   cat >&2 <<'MSG'
 ERROR: GITHUB_TOKEN is not set in this environment — cannot push.
@@ -56,6 +56,23 @@ docker-compose.yml, then recreate the container:
     - GITHUB_TOKEN=${GITHUB_TOKEN}
 MSG
   exit 1
+fi
+
+# A non-empty variable is not the same as a working one: a revoked or expired
+# token passes the check above and then fails at push time with an opaque git
+# error. One cheap API call turns that into a clear message up front.
+# Skip with SKIP_TOKEN_CHECK=1 if offline or rate-limited.
+if [ "${SKIP_TOKEN_CHECK:-0}" != "1" ]; then
+  AUTH_CODE="$(curl -s -o /dev/null -w '%{http_code}' \
+    -H "Authorization: Bearer $GITHUB_TOKEN" \
+    https://api.github.com/user || echo 000)"
+  case "$AUTH_CODE" in
+    200) : ;;
+    000) echo "WARNING: could not reach api.github.com to validate the token — continuing anyway." >&2 ;;
+    401) echo "ERROR: GITHUB_TOKEN is set but REJECTED by GitHub (401) — revoked or expired. Replace it and re-run." >&2; exit 1 ;;
+    403) echo "ERROR: GITHUB_TOKEN rejected with 403 — rate-limited or insufficient scope (needs repo/contents:write)." >&2; exit 1 ;;
+    *)   echo "ERROR: unexpected $AUTH_CODE validating GITHUB_TOKEN against api.github.com." >&2; exit 1 ;;
+  esac
 fi
 
 # ---- 2. pre-flight: repo must be clean apart from expected paths -----------
@@ -115,22 +132,16 @@ git -c user.name="${GIT_AUTHOR_NAME:-AgentShadow}" \
     -c user.email="${GIT_AUTHOR_EMAIL:-agentshadow@kentsworld.com}" \
     commit -m "$COMMIT_MSG"
 
-# ---- 5. push, feeding the token via GIT_ASKPASS ---------------------------
-# GIT_ASKPASS keeps the token out of argv, out of the remote URL, and out of
-# any log or shell history. Never interpolate $GITHUB_TOKEN into a command.
-ASKPASS="$(mktemp)"
-trap 'rm -f "$SYNC_LOG" "$ASKPASS"' EXIT
-cat > "$ASKPASS" <<'SHIM'
-#!/bin/sh
-case "$1" in
-  *[Uu]sername*) printf '%s' 'x-access-token' ;;
-  *) printenv GITHUB_TOKEN ;;
-esac
-SHIM
-chmod 700 "$ASKPASS"
-
+# ---- 5. push, feeding the token via an inline credential helper ------------
+# The helper body is single-quoted here, so $GITHUB_TOKEN is NOT expanded by
+# this shell — git runs the helper as a subshell that inherits the environment
+# and expands it there. The value therefore never appears in argv, in the
+# remote URL, in .git/config, on disk, or in shell history. Never interpolate
+# $GITHUB_TOKEN into a command line yourself.
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
-GIT_ASKPASS="$ASKPASS" GIT_TERMINAL_PROMPT=0 git push origin "$BRANCH"
+GIT_TERMINAL_PROMPT=0 git \
+  -c credential.helper='!f() { echo username=x-access-token; echo "password=$GITHUB_TOKEN"; }; f' \
+  push origin "$BRANCH"
 
 echo
 echo "Pushed $(git rev-parse --short HEAD) to origin/$BRANCH."
