@@ -404,20 +404,21 @@ OPENROUTER_API_KEY=<redacted>
 | `OPENROUTER_API_KEY`               | Bearer key for the OpenRouter gateway | **Secret.** One key covers every model/vendor in `models.yml` — no per-vendor credentials. |
 
 
-| Variable | Overrides / Purpose | Description |
-|---|---|---|
-| `PI_PY` | Disable Python eval | `0` disables the Python eval backend |
-| `PI_JS` | Disable JS eval | `0` disables the JavaScript eval backend |
-| `PI_TINY_DEVICE` | `providers.tinyModelDevice` | ONNX execution provider for local tiny models |
-| `PI_TINY_DTYPE` | `providers.tinyModelDtype` | ONNX precision for local tiny models |
-| `OMP_AUTH_BROKER_URL` | `auth.broker.url` | Auth broker URL for enterprise SSO credential relay |
-| `OMP_AUTH_BROKER_TOKEN` | `auth.broker.token` | Auth broker bearer token |
-| `PI_CODING_AGENT_DIR` | Agent directory | Relocate entire agent config directory |
-| `PI_NO_PTY` | PTY mode | `1` disables PTY allocation for bash tool |
-| `PI_PROXY_<PROVIDER>` | Per-provider proxy | e.g. `PI_PROXY_OPENROUTER` — takes priority over `PI_PROXY` |
-| `NO_PROXY` / `no_proxy` | Proxy bypass | Standard comma-separated bypass list |
-| `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT` | Traces-specific endpoint | Takes priority over `OTEL_EXPORTER_OTLP_ENDPOINT` |
-| `OMP_SKIP_SETUP` | Skip setup wizard | Set for scripted/automated onboarding |
+| Variable                             | Overrides / Purpose         | Description                                                 |
+| ------------------------------------ | --------------------------- | ----------------------------------------------------------- |
+| `PI_PY`                              | Disable Python eval         | `0` disables the Python eval backend                        |
+| `PI_JS`                              | Disable JS eval             | `0` disables the JavaScript eval backend                    |
+| `PI_TINY_DEVICE`                     | `providers.tinyModelDevice` | ONNX execution provider for local tiny models               |
+| `PI_TINY_DTYPE`                      | `providers.tinyModelDtype`  | ONNX precision for local tiny models                        |
+| `OMP_AUTH_BROKER_URL`                | `auth.broker.url`           | Auth broker URL for enterprise SSO credential relay         |
+| `OMP_AUTH_BROKER_TOKEN`              | `auth.broker.token`         | Auth broker bearer token                                    |
+| `PI_CODING_AGENT_DIR`                | Agent directory             | Relocate entire agent config directory                      |
+| `PI_NO_PTY`                          | PTY mode                    | `1` disables PTY allocation for bash tool                   |
+| `PI_PROXY_<PROVIDER>`                | Per-provider proxy          | e.g. `PI_PROXY_OPENROUTER` — takes priority over `PI_PROXY` |
+| `NO_PROXY` / `no_proxy`              | Proxy bypass                | Standard comma-separated bypass list                        |
+| `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT` | Traces-specific endpoint    | Takes priority over `OTEL_EXPORTER_OTLP_ENDPOINT`           |
+| `OMP_SKIP_SETUP`                     | Skip setup wizard           | Set for scripted/automated onboarding                       |
+|                                      |                             |                                                             |
 
 > **Not currently set — documented for reference:**
 > - `OTEL_EXPORTER_OTLP_HEADERS` — auth headers for remote OTLP (LangFuse, Grafana Cloud). Format: `Key=Value,Key2=Value2`
